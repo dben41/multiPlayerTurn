@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 682828896eb653841a84b6c3c94ccfe1
+timeCreated: 1454347479
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - towerPrefab: {fileID: 154848, guid: 8420d8304bce06a4da388ee769efc347, type: 2}
+  - towerSpawn: {fileID: 105684, guid: 14098b208818ec44cbb3afcd7d62aff0, type: 2}
+  - textPrefab: {fileID: 159716, guid: a97329e2874e8fe4a87cabeebf10c815, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
