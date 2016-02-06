@@ -14,7 +14,7 @@ public class PlayerController : NetworkBehaviour
     [SyncVar]
     private int turn;
 
-    public SyncListUInt serverNetworkId;// = new SyncListUInt();
+   // public SyncListUInt serverNetworkId;// = new SyncListUInt();
 
     private uint player;
     private NetworkIdentity objNetId;
@@ -29,12 +29,12 @@ public class PlayerController : NetworkBehaviour
 
         //add player id to network
         //serverNetworkId.Add(player);
-
-        CmdStartList();
-        CmdAddToList();
+        GameStateManager.addPlayer((int)player);
+        //CmdStartList();
+       // CmdAddToList();
 
         //initialize player text
-        playerText = GameObject.FindGameObjectWithTag("PlayerTurnText").GetComponent<Text>();
+       playerText = GameObject.FindGameObjectWithTag("PlayerTurnText").GetComponent<Text>();
 
         playerText.text = "It's working";
     }
@@ -57,7 +57,7 @@ public class PlayerController : NetworkBehaviour
             //update the variable
             CmdGetTurn(); //the rpc method would be more robust and reduce traffic
             if (turn != player) return;
-            CmdChangeTurn();
+           // CmdChangeTurn();
 
             //Debug.Log("Player  " + player + ": turn after CmdChangeTurn gets called: " + turn);
             //check if it's my turn, if not, exit out
@@ -77,56 +77,56 @@ public class PlayerController : NetworkBehaviour
         RpcUpdateTower(go, c);
         objNetId.RemoveClientAuthority(connectionToClient);
     }
+    /*
+        [Command]
+        void CmdStartList()
+        {
+            if(serverNetworkId == null) serverNetworkId = new SyncListUInt();
+        }
 
-    [Command]
-    void CmdStartList()
-    {
-        if(serverNetworkId == null) serverNetworkId = new SyncListUInt();
-    }
+        [Command]
+        void CmdAddToList()
+        {
+            serverNetworkId.Add(player);
+        }
 
-    [Command]
-    void CmdAddToList()
-    {
-        serverNetworkId.Add(player);
-    }
+        private uint getNextPlayer() {
+            int currentPlayerIndex = serverNetworkId.IndexOf(player);
+            int numberOfPlayers = serverNetworkId.Count;
+            uint nextPlayer;
 
-    private uint getNextPlayer() {
-        int currentPlayerIndex = serverNetworkId.IndexOf(player);
-        int numberOfPlayers = serverNetworkId.Count;
-        uint nextPlayer;
-
-        if (currentPlayerIndex == numberOfPlayers - 1) nextPlayer = serverNetworkId[0];
-        else nextPlayer = serverNetworkId[currentPlayerIndex+1];
-        return nextPlayer;
-    }
-
-
-    //updates state on the server
-    [Command]
-    void CmdChangeTurn()
-    {
-
-        if(turn == player) GameStateManager.setPlayerTurn((int)getNextPlayer());
+            if (currentPlayerIndex == numberOfPlayers - 1) nextPlayer = serverNetworkId[0];
+            else nextPlayer = serverNetworkId[currentPlayerIndex+1];
+            return nextPlayer;
+        }
 
 
-        //if (turn == player) GameStateManager.setPlayerTurn(2);
-        //else GameStateManager.setPlayerTurn(1);
-        turn = GameStateManager.getPlayerTurn();
-        //syncs this all clients connected on server 
-        RpcUpdateTurn(turn);
-    }
+        //updates state on the server
+        [Command]
+        void CmdChangeTurn()
+        {
 
-    [ClientRpc]
-    void RpcUpdateTurn(int i)
-    {
-        turn = i;
-        //playerText.text = "Player " + turn + "'s turn.";
-        if (turn == player)
-            playerText.text = "Your turn. ";
-        else if(turn != player)
-            playerText.text = "Opponent's turn. ";
-    }
-    
+            if(turn == player) GameStateManager.setPlayerTurn((int)getNextPlayer());
+
+
+            //if (turn == player) GameStateManager.setPlayerTurn(2);
+            //else GameStateManager.setPlayerTurn(1);
+            turn = GameStateManager.getPlayerTurn();
+            //syncs this all clients connected on server 
+            RpcUpdateTurn(turn);
+        }
+
+        [ClientRpc]
+        void RpcUpdateTurn(int i)
+        {
+            turn = i;
+            //playerText.text = "Player " + turn + "'s turn.";
+            if (turn == player)
+                playerText.text = "Your turn. ";
+            else if(turn != player)
+                playerText.text = "Opponent's turn. ";
+        }
+        */
 
     [Command]
     void CmdGetTurn()
@@ -142,4 +142,5 @@ public class PlayerController : NetworkBehaviour
     {
         go.GetComponent<Renderer>().material.color = c;
     }
+    
 }

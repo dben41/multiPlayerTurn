@@ -23,10 +23,7 @@ public class TowerSpawnLoc : NetworkBehaviour
         NetworkServer.Spawn(go);
     }
 
-    public override void OnStartClient()
-    {
-        
-    }
+
 
     // public override void OnStartLocalPlayer()
 
