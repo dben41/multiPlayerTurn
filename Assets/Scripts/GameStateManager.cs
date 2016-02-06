@@ -29,11 +29,9 @@ public class GameStateManager : NetworkBehaviour
         return playerTurn;
     }
 
-    public static void setPlayerTurn(int i)
-    {
-        playerTurn = i;
-    }
-
+    /*
+     * Increment the player's turn
+     */
     public static void nextTurn()
     {
         int currentIndex = connectedPlayers.IndexOf(playerTurn);

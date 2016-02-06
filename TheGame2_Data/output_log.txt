@@ -14,15 +14,9 @@ Platform assembly: C:\Users\Public\Documents\Unity Projects\Multi-player turn tu
 Loading C:\Users\Public\Documents\Unity Projects\Multi-player turn tutorial\TheGame2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: C:\Users\Public\Documents\Unity Projects\Multi-player turn tutorial\TheGame2_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading C:\Users\Public\Documents\Unity Projects\Multi-player turn tutorial\TheGame2_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.047 seconds
+- Completed reload, in  0.044 seconds
 Platform assembly: C:\Users\Public\Documents\Unity Projects\Multi-player turn tutorial\TheGame2_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Public\Documents\Unity Projects\Multi-player turn tutorial\TheGame2_Data\Managed\System.dll (this message is harmless)
 desktop: 1366x768 60Hz; virtual: 3286x1140 at -1366,-60
 <RI> Initializing input.
 <RI> Input initialized.
-<RI> Initialized touch support.
-UnloadTime: 0.735989 ms
-Setting up 2 worker threads for Enlighten.
-  Thread -> id: 8b30 -> priority: 1 
-  Thread -> id: 84b4 -> priority: 1 
-Log: connection {1} has been disconnected by timeout; address {::ffff:127.0.0.1:7777}
