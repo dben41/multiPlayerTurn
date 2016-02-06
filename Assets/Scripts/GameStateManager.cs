@@ -6,8 +6,8 @@ using System.Collections.Generic;
 public class GameStateManager : NetworkBehaviour
 {
     //an enum, Player 1 = 1, Player 2 = 2.
-    private static int playerTurn = 1;
-    private static HashSet<int> connectedPlayers = new HashSet<int>(); 
+    public static int playerTurn = -1;
+    public static ArrayList connectedPlayers = new ArrayList(); 
 
     //public static GameStateManager instance;
 
@@ -25,6 +25,7 @@ public class GameStateManager : NetworkBehaviour
 
     public static int getPlayerTurn()
     {
+        if (playerTurn == -1) playerTurn = (int)connectedPlayers[0];
         return playerTurn;
     }
 
@@ -33,4 +34,10 @@ public class GameStateManager : NetworkBehaviour
         playerTurn = i;
     }
 
+    public static void nextTurn()
+    {
+        int currentIndex = connectedPlayers.IndexOf(playerTurn);
+        if (currentIndex == connectedPlayers.Count - 1) playerTurn = (int)connectedPlayers[0];
+        else playerTurn = (int)connectedPlayers[currentIndex + 1];
+    }
 }

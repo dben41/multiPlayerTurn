@@ -10,13 +10,9 @@ public class PlayerController : NetworkBehaviour
     public Color cubeColor;
     [SyncVar]
     private GameObject objectID;
-
     [SyncVar]
-    private int turn;
-
-   // public SyncListUInt serverNetworkId;// = new SyncListUInt();
-
-    private uint player;
+    public int turn;
+    public uint player;
     private NetworkIdentity objNetId;
 
 
@@ -28,14 +24,13 @@ public class PlayerController : NetworkBehaviour
         player =  this.GetComponent<NetworkIdentity>().netId.Value;
 
         //add player id to network
-        //serverNetworkId.Add(player);
         GameStateManager.addPlayer((int)player);
-        //CmdStartList();
-       // CmdAddToList();
+
+        //get initial player
+        turn = GameStateManager.getPlayerTurn();
 
         //initialize player text
-       playerText = GameObject.FindGameObjectWithTag("PlayerTurnText").GetComponent<Text>();
-
+        playerText = GameObject.FindGameObjectWithTag("PlayerTurnText").GetComponent<Text>();
         playerText.text = "It's working";
     }
 
@@ -45,24 +40,22 @@ public class PlayerController : NetworkBehaviour
         if (isLocalPlayer)
         { 
             CheckIfClicked();
+            CmdGetTurn();
+            changeTurnText();
         }
-
-
-
     }
+
     void CheckIfClicked()
     {
         if (Input.GetMouseButtonDown(0))
         {
             //update the variable
-            CmdGetTurn(); //the rpc method would be more robust and reduce traffic
-            if (turn != player) return;
-           // CmdChangeTurn();
-
-            //Debug.Log("Player  " + player + ": turn after CmdChangeTurn gets called: " + turn);
+            CmdGetTurn();
             //check if it's my turn, if not, exit out
-            //else exit out
-            Debug.Log("");
+            if (turn != player) return;
+            CmdChangeTurn();
+
+            //change the color
             objectID = GameObject.FindGameObjectsWithTag("Tower")[0];
             cubeColor = new Color(Random.value, Random.value, Random.value, Random.value);
             CmdChangeColor(objectID, cubeColor);
@@ -76,62 +69,32 @@ public class PlayerController : NetworkBehaviour
         objNetId.AssignClientAuthority(connectionToClient);
         RpcUpdateTower(go, c);
         objNetId.RemoveClientAuthority(connectionToClient);
-    }
-    /*
-        [Command]
-        void CmdStartList()
-        {
-            if(serverNetworkId == null) serverNetworkId = new SyncListUInt();
-        }
+    } 
 
-        [Command]
-        void CmdAddToList()
-        {
-            serverNetworkId.Add(player);
-        }
-
-        private uint getNextPlayer() {
-            int currentPlayerIndex = serverNetworkId.IndexOf(player);
-            int numberOfPlayers = serverNetworkId.Count;
-            uint nextPlayer;
-
-            if (currentPlayerIndex == numberOfPlayers - 1) nextPlayer = serverNetworkId[0];
-            else nextPlayer = serverNetworkId[currentPlayerIndex+1];
-            return nextPlayer;
-        }
-
-
+        
         //updates state on the server
         [Command]
         void CmdChangeTurn()
         {
-
-            if(turn == player) GameStateManager.setPlayerTurn((int)getNextPlayer());
-
-
-            //if (turn == player) GameStateManager.setPlayerTurn(2);
-            //else GameStateManager.setPlayerTurn(1);
+            if (turn == player) GameStateManager.nextTurn();
             turn = GameStateManager.getPlayerTurn();
             //syncs this all clients connected on server 
             RpcUpdateTurn(turn);
         }
-
-        [ClientRpc]
+        
+       [ClientRpc]
         void RpcUpdateTurn(int i)
         {
             turn = i;
-            //playerText.text = "Player " + turn + "'s turn.";
-            if (turn == player)
-                playerText.text = "Your turn. ";
-            else if(turn != player)
-                playerText.text = "Opponent's turn. ";
+            changeTurnText();
         }
-        */
+        
 
     [Command]
     void CmdGetTurn()
     {
         turn = GameStateManager.getPlayerTurn();
+       
     }
 
     /*
@@ -141,6 +104,18 @@ public class PlayerController : NetworkBehaviour
     void RpcUpdateTower(GameObject go, Color c)
     {
         go.GetComponent<Renderer>().material.color = c;
+     
+    }
+
+    /*
+     * Changes the turn text of the player
+     */
+    void changeTurnText()
+    {
+        if (turn == player)
+            playerText.text = "Your turn. ";
+        else if (turn != player)
+            playerText.text = "Opponent's turn. ";
     }
     
 }
